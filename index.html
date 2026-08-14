@@ -1,200 +1,62 @@
-<!DOCTYPE html>
-<html lang="de">
-
-<head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Catcalls</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600&display=swap" rel="stylesheet">
-
-
-<style>
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-
-html,
-body {
-
-    width: 100%;
-    height: 100%;
-
-    overflow: hidden;
-
-    background: #ECE8E1;
-
-    font-family: "Atkinson Hyperlegible Next", sans-serif;
-
-}
-
-
-body {
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-}
-
-
-main {
-
-    width: 90%;
-
-    max-width: 650px;
-
-    text-align: center;
-
-}
-
-
-#spruch {
-
-    font-size: clamp(1.8rem, 6vw, 3rem);
-
-    line-height: 1.4;
-
-    font-weight: 600;
-
-    color: #6B2F39;
-
-    transition: opacity 0.4s ease;
-
-}
-
-
-.links {
-
-    margin-top: 45px;
-
-    display: flex;
-
-    justify-content: center;
-
-    gap: 30px;
-
-}
-
-
-.links button {
-
-    border: none;
-
-    background: none;
-
-    padding: 10px;
-
-    font-family: inherit;
-
-    font-size: 1rem;
-
-    color: #444;
-
-    cursor: pointer;
-
-}
-
-
-.links button:hover {
-
-    color: #6B2F39;
-
-}
-
-
-.links button:focus-visible {
-
-    outline: 2px solid #6B2F39;
-
-    outline-offset: 4px;
-
-}
-
-
-</style>
-
-</head>
-
-
-<body>
-
-
-<main>
-
-    <div id="spruch">
-
-        Vielleicht ist Schweigen die lauteste Antwort.
-
-    </div>
-
-
-    <div class="links">
-
-        <button id="languageButton">
-
-            English
-
-        </button>
-
-
-        <button id="speakButton">
-
-            Vorlesen
-
-        </button>
-
-    </div>
-
-</main>
-
-
 <script>
 
-
 /* =========================
-   SPRUCH
+   SPRÜCHE
 ========================= */
 
-
 const spruchDeutsch =
-
-    "Vielleicht ist Schweigen die lauteste Antwort.";
+    "Ich stand abends gegen 23 Uhr alleine vorm Cinemaxx, als ein schwarzes Auto vor mir gehalten hat: „Hey, kennst du die Icki Micki Straße?“ Ich hab den Namen nicht ganz verstanden, wollte ihm helfen und bin einen Schritt näher ans Auto gegangen. Ich frage, welche Straße, und er sagt: „Ja, komm mit, die ist direkt neben der Ficki Ficki Straße.“";
 
 
 const spruchEnglisch =
+    "One evening, around 11 p.m., I was standing alone in front of the Cinemaxx when a black car stopped in front of me. The driver said: „Hey, do you know Icki Micki Street?“ I didn't quite understand the name and wanted to help him, so I took one step closer to the car. I asked which street, and he said: „Yeah, come with me. It's right next to Ficki Ficki Street.“";
 
-    "Perhaps silence is the loudest answer.";
 
+/* =========================
+   TEXT FÜR DIE VORLESEFUNKTION
+   Mit bewussten Pausen
+========================= */
+
+const vorleseDeutsch =
+    "Ich stand abends gegen 23 Uhr alleine vorm Cinemaxx. " +
+    "Als ein schwarzes Auto vor mir gehalten hat, sagte er: " +
+    "Hey, kennst du die Icki Micki Straße? " +
+    "Ich hab den Namen nicht ganz verstanden, wollte ihm helfen " +
+    "und bin einen Schritt näher ans Auto gegangen. " +
+    "Ich frage: Welche Straße? " +
+    "Und er sagt: " +
+    "Ja, komm mit. " +
+    "Die ist direkt neben der Ficki Ficki Straße.";
+
+
+const vorleseEnglisch =
+    "One evening, around 11 p.m., I was standing alone in front of the Cinemaxx. " +
+    "A black car stopped in front of me, and the driver said: " +
+    "Hey, do you know Icki Micki Street? " +
+    "I didn't quite understand the name. " +
+    "I wanted to help him, so I took one step closer to the car. " +
+    "I asked: Which street? " +
+    "And he said: " +
+    "Yeah, come with me. " +
+    "It's right next to Ficki Ficki Street.";
+
+
+/* =========================
+   STATUS
+========================= */
 
 let englischAktiv = false;
-
 
 
 /* =========================
    SPRUCH ANZEIGEN
 ========================= */
 
-
 function zeigeSpruch() {
 
     const spruchElement = document.getElementById("spruch");
 
     spruchElement.style.opacity = "0";
-
 
     setTimeout(() => {
 
@@ -208,7 +70,6 @@ function zeigeSpruch() {
 
         }
 
-
         spruchElement.style.opacity = "1";
 
     }, 300);
@@ -216,19 +77,23 @@ function zeigeSpruch() {
 }
 
 
-
 /* =========================
    SPRACHE WECHSELN
 ========================= */
-
 
 document.getElementById("languageButton").addEventListener("click", () => {
 
     englischAktiv = !englischAktiv;
 
+    /* Laufende Sprachausgabe stoppen */
+
+    if ("speechSynthesis" in window) {
+
+        window.speechSynthesis.cancel();
+
+    }
 
     const button = document.getElementById("languageButton");
-
 
     if (englischAktiv) {
 
@@ -240,64 +105,136 @@ document.getElementById("languageButton").addEventListener("click", () => {
 
     }
 
-
     zeigeSpruch();
 
 });
 
+
+/* =========================
+   PASSENDE STIMME SUCHEN
+========================= */
+
+function findeStimme(sprache) {
+
+    const stimmen = window.speechSynthesis.getVoices();
+
+    if (stimmen.length === 0) {
+
+        return null;
+
+    }
+
+
+    /* Erst exakt passende Sprache */
+
+    let stimme = stimmen.find(voice =>
+        voice.lang.toLowerCase() === sprache.toLowerCase()
+    );
+
+
+    /* Danach passende Sprachfamilie */
+
+    if (!stimme) {
+
+        stimme = stimmen.find(voice =>
+            voice.lang.toLowerCase().startsWith(
+                sprache.substring(0, 2).toLowerCase()
+            )
+        );
+
+    }
+
+
+    return stimme || null;
+
+}
 
 
 /* =========================
    VORLESEN
 ========================= */
 
-
 document.getElementById("speakButton").addEventListener("click", () => {
 
     if (!("speechSynthesis" in window)) {
 
-        alert("Die Vorlesefunktion wird von diesem Gerät leider nicht unterstützt.");
+        alert(
+            "Die Vorlesefunktion wird von diesem Gerät leider nicht unterstützt."
+        );
 
         return;
 
     }
 
 
+    /* Bereits laufende Ausgabe stoppen */
+
     window.speechSynthesis.cancel();
 
 
     const text = englischAktiv
-
-        ? spruchEnglisch
-
-        : spruchDeutsch;
+        ? vorleseEnglisch
+        : vorleseDeutsch;
 
 
-    const utterance = new SpeechSynthesisUtterance(text);
+    const sprache = englischAktiv
+        ? "en-US"
+        : "de-DE";
 
 
-    if (englischAktiv) {
+    const utterance =
+        new SpeechSynthesisUtterance(text);
 
-        utterance.lang = "en-US";
 
-    } else {
+    /* Sprache */
 
-        utterance.lang = "de-DE";
+    utterance.lang = sprache;
+
+
+    /* Passende Stimme */
+
+    const stimme = findeStimme(sprache);
+
+    if (stimme) {
+
+        utterance.voice = stimme;
 
     }
 
 
-    utterance.rate = 0.9;
+    /* Natürlichere Sprechweise */
 
+    utterance.rate = 0.85;
+
+    utterance.pitch = 1.0;
+
+    utterance.volume = 1.0;
+
+
+    /* Vorlesen starten */
 
     window.speechSynthesis.speak(utterance);
 
 });
 
 
+/* =========================
+   STIMMEN LADEN
+   (besonders wichtig für Safari)
+========================= */
+
+if ("speechSynthesis" in window) {
+
+    window.speechSynthesis.onvoiceschanged = () => {
+
+        window.speechSynthesis.getVoices();
+
+    };
+
+}
+
+
 </script>
-
-
 </body>
 
 </html>
