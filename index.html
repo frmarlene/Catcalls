@@ -29,9 +29,11 @@ html,
 body {
 
     width: 100%;
-    min-height: 100%;
+    height: 100%;
 
-    background: #FFD9D9;
+    overflow: hidden;
+
+    background: #ECE8E1;
 
     font-family: "Atkinson Hyperlegible Next", sans-serif;
 
@@ -40,15 +42,11 @@ body {
 
 body {
 
-    min-height: 100vh;
-    
     display: flex;
 
     justify-content: center;
 
     align-items: center;
-
-    padding: 40px 20px;
 
 }
 
@@ -57,7 +55,7 @@ main {
 
     width: 90%;
 
-    max-width: 650px;
+    max-width: 750px;
 
     text-align: center;
 
@@ -66,13 +64,13 @@ main {
 
 #spruch {
 
-    font-size: clamp(1.2rem, 3.5vw, 2rem);
+    font-size: clamp(1.35rem, 4.5vw, 2.5rem);
 
-    line-height: 1.5;
+    line-height: 1.45;
 
     font-weight: 600;
 
-    color: #CC1716;
+    color: #6B2F39;
 
     transition: opacity 0.4s ease;
 
@@ -104,7 +102,7 @@ main {
 
     font-size: 1rem;
 
-    color: #444;
+    color: #6B2F39;
 
     cursor: pointer;
 
@@ -113,14 +111,14 @@ main {
 
 .links button:hover {
 
-    color: #CC1716;
+    opacity: 0.65;
 
 }
 
 
 .links button:focus-visible {
 
-    outline: 2px solid #CC1716;
+    outline: 2px solid #6B2F39;
 
     outline-offset: 4px;
 
@@ -137,11 +135,7 @@ main {
 
 <main>
 
-    <div id="spruch">
-
-        Ich stand abends gegen 23 Uhr alleine vorm Cinemaxx, als ein schwarzes Auto vor mir gehalten hat: „Hey, kennst du die Icki Micki Straße?“ Ich hab den Namen nicht ganz verstanden, wollte ihm helfen und bin einen Schritt näher ans Auto gegangen. Ich frage, welche Straße, und er sagt: „Ja, komm mit, die ist direkt neben der Ficki Ficki Straße.“
-
-    </div>
+    <div id="spruch"></div>
 
 
     <div class="links">
@@ -160,33 +154,236 @@ main {
 <script>
 
 
+const catcalls = [
+
+
+    {
+        deutsch: `Ich stand abends gegen 23 Uhr alleine vorm Cinemaxx, als ein schwarzes Auto vor mir gehalten hat: „Hey, kennst du die Icki Micki Straße?“ Ich hab den Namen nicht ganz verstanden, wollte ihm helfen und bin einen Schritt näher ans Auto gegangen. Ich frage, welche Straße, und er sagt: „Ja, komm mit, die ist direkt neben der Ficki Ficki Straße.“`,
+
+        englisch: `At around 11 p.m., I was standing alone outside the Cinemaxx when a black car stopped in front of me. “Hey, do you know Icki Micki Street?” I didn’t quite understand the name and wanted to help him, so I took a step closer to the car. I asked which street, and he said: “Yeah, come with me, it’s right next to Ficki Ficki Street.”`
+    },
+
+
+    {
+        deutsch: `Er musterte mich von oben bis unten, machte Knurrgeräusche und leckte sich über die Lippen.`,
+
+        englisch: `He looked me up and down, made growling noises and licked his lips.`
+    },
+
+
+    {
+        deutsch: `Ich war in der U-Bahn. Er stellte sich direkt vor mich, sah mich an und zeigte dann seine Geschlechtsteile.`,
+
+        englisch: `I was on the subway. He stood directly in front of me, looked at me and then exposed his genitals.`
+    },
+
+
+    {
+        deutsch: `Ich war 15: Ich habe hinter dem Bahnhof zu K-Pop Songs getanzt. Das macht man in der Community häufig, um die Choreos zu üben. Meine Freundin hat mich dabei gefilmt, als ein alter Mann zu meiner Freundin sagte: „Die würde ich gerne f*cken“. Seit dem habe ich nie wieder in der Öffentlichkeit getanzt aus Angst.`,
+
+        englisch: `I was 15. I was dancing to K-pop songs behind the train station. People in the community often do this to practice the choreography. My friend was filming me when an old man said to my friend: “I’d like to f*ck her.” Since then, I have never danced in public again because I was afraid.`
+    },
+
+
+    {
+        deutsch: `Ich war mit einer Freundin abends in der Innenstadt aus. Wir wollten nachhause laufen. Plötzlich fuhr ein Auto neben uns. Mehrere Männer saßen in dem Auto und fragten meine Freundin, ob sie einsteigen möchte. Wir haben nein gesagt. Sie sind eine Runde um den Block gefahren, fragten uns wieder und sind dann in Schrittgeschwindigkeit hinter uns her getuckert und haben uns Sprüche zugerufen. Wir sind aus Angst zurück zum Hbf gelaufen, um doch den Zug zu nehmen.`,
+
+        englisch: `I was out in the city center with a friend one evening. We wanted to walk home. Suddenly, a car drove alongside us. Several men were sitting in it and asked my friend if she wanted to get in. We said no. They drove around the block, asked us again, and then slowly followed us, shouting comments at us. We were so scared that we walked back to the main train station to take the train after all.`
+    },
+
+
+    {
+        deutsch: `Ein Typ steht an der Ecke zum Brückendurchgang und schaut mich schon 30m vor meiner Ankunft an und begrüßt mich mit: „Guten Morgen du schöne Frau“. Ich versuche cool zu bleiben und reagiere mit einem über die Schultergeworfenen Mittelfinger. Darauf sagt er, der mir wohl hinterhergeschaut haben muss: „Ja, dich fick ich auch noch“.`,
+
+        englisch: `A guy was standing at the corner by the underpass and was already watching me from about 30 meters away. He greeted me with: “Good morning, beautiful woman.” I tried to stay calm and responded by giving him the middle finger over my shoulder. He must have watched me as I walked away, because he then said: “Yeah, I’ll f*ck you too.”`
+    },
+
+
+    {
+        deutsch: `Wir sind in einer Straße an einer Bar vorbeigelaufen, bei der 5 Männer davor saßen. Die haben meine Freundin und mich im Vorbeigehen angestarrt und gesagt: „Guck mal, die wäre doch was für dich“.`,
+
+        englisch: `We were walking down a street past a bar where five men were sitting outside. As my friend and I walked past, they stared at us and said: “Look, she’d be something for you.”`
+    },
+
+
+    {
+        deutsch: `Samstagabend gegen 20:30 Uhr habe ich meinen Freund zum Bahnhof gebracht. Danach stand ich an einer Ampel und schaute kurz von meinem Handy hoch. Da wurde mir von zwei Männern, die im Auto an mir vorbeifuhren, zugegrinst und zugezwinkert.`,
+
+        englisch: `At around 8:30 p.m. on a Saturday evening, I had taken my boyfriend to the train station. Afterwards, I was standing at a traffic light and briefly looked up from my phone. Two men driving past me in a car grinned and winked at me.`
+    },
+
+
+    {
+        deutsch: `Ich war mit meinen Omas Klamotten einkaufen. Als wir den Laden verließen, kam uns ein Mann entgegen. Er lächelte uns an und meinte dann zu uns, sein Sperma wäre golden und könne uns verjüngen.`,
+
+        englisch: `I was shopping for clothes with my grandmothers. When we left the store, a man came towards us. He smiled at us and then told us that his sperm was golden and could make us younger.`
+    },
+
+
+    {
+        deutsch: `Ich war damals 20 und mit Freunden feiern. Auf einmal tippt mir ein Kerl auf die Schulter und meint zu mir: „Ich finde dich so süß, dich würde ich gerne in den Arsch f*cken“.`,
+
+        englisch: `I was 20 at the time and out partying with friends. Suddenly, a guy tapped me on the shoulder and said: “I think you’re so cute, I’d like to f*ck you in the ass.”`
+    },
+
+
+    {
+        deutsch: `Ich war alleine auf dem Weg nachhause und wartete auf die U-Bahn. Ein harmlos aussehender, Mitte 20-jähriger Mann stand auch an der Haltestelle. Als die Bahn einfuhr, kam er schnell zu meiner Tür, ich stieg ein und setzte mich. Er setzte sich direkt neben mich. Nach so 2 Haltestellen später merkte ich irgendwas unter meinem Hintern sich bewegen. Ich schaute ihn an, er zitterte und hatte seine Hand in der Hose und die andere Hand unter meinem Hintern. Ich stand auf ohne etwas zu sagen und lief mit Tränen in den Augen an das andere Ende des Wagens. Als die Bahn anhielt und er ausstieg, rannte er noch an meinem Fenster vorbei.`,
+
+        englisch: `I was on my way home alone and waiting for the subway. A harmless-looking man in his mid-twenties was also waiting at the station. When the train arrived, he quickly came to my door. I got on and sat down. He sat directly next to me. After about two stops, I felt something moving underneath me. I looked at him. He was trembling, had one hand inside his pants and the other underneath me. I stood up without saying anything and walked to the other end of the train with tears in my eyes. When the train stopped and he got off, he ran past my window.`
+    },
+
+
+    {
+        deutsch: `Ich wollten an der Uni im Parkhaus in mein Auto steigen. Neben meinem Auto war ein Kerl in seinem Auto und masturbierte. Als ich ihn angesehen habe hat er Augenkontakt hergestellt und weiter masturbiert. Er hat mich die ganze Zeit beobachtet, bis ich weg gefahren bin.`,
+
+        englisch: `I wanted to get into my car in the university parking garage. There was a guy in his car next to mine, masturbating. When I looked at him, he made eye contact with me and continued masturbating. He watched me the entire time until I drove away.`
+    },
+
+
+    {
+        deutsch: `Mir wurde auf der Straße hinterher gepfiffen und gerufen: „Zieh mal Shorts an, dann siehst du noch geiler aus.“`,
+
+        englisch: `Someone whistled at me and shouted after me in the street: “Wear some shorts, then you’ll look even hotter.”`
+    },
+
+
+    {
+        deutsch: `An einer Haltestelle sind mir 2 Typen entgegengekommen und sagten: „Guck mal, die ist geil! Weiße Mädchen ficken am besten.“`,
+
+        englisch: `Two guys approached me at a bus stop and said: “Look, she’s hot! White girls are the best to f*ck.”`
+    },
+
+
+    {
+        deutsch: `Ich saß ganz alleine im hinteren Bereich einer S-Bahn, bis sich ein etwa 25-jähriger Mann einen Viererplatz neben mich setzte. Auf der Fahrt zur nächsten Haltestelle sah ich im Augenwinkel, dass der Mann sich einen runterholt. Dabei schaute er mich die ganze Zeit an.`,
+
+        englisch: `I was sitting completely alone in the back of a suburban train when a man who looked about 25 sat in the four-seat section next to me. On the way to the next stop, I noticed out of the corner of my eye that he was masturbating. He stared at me the entire time.`
+    },
+
+
+    {
+        deutsch: `Ich habe einen Arbeitskollegen nachhause gefahren. Er fasste mich am Nacken an, als ich nein sagte, fasste er mich am Oberschenkel an, um sich bei mir zu entschuldigen. Das alles passierte während ich Auto gefahren bin. Er wollte nicht lockerlassen, dass ich nachts seine Wohnung „mal anschauen“ solle. Ich dachte ich sei in meinem Auto sicher, aber diese Sicherheit wurde mir genommen.`,
+
+        englisch: `I drove a colleague home from work. He grabbed me by the neck. When I said no, he touched my thigh to apologize. All of this happened while I was driving. He kept insisting that I should “come see his apartment” at night. I thought I was safe in my car, but that sense of safety was taken away from me.`
+    },
+
+
+    {
+        deutsch: `Ich wurde angesprochen, ob ich etwas Kleingeld habe. Ich verneinte und dann sagte er: „Kein Problem, ich nehme auch Sex.“`,
+
+        englisch: `Someone asked me if I had any spare change. I said no, and he replied: “No problem, I’ll take sex instead.”`
+    },
+
+
+    {
+        deutsch: `Ich war 11 Jahre alt und bin nach der Schule in die Bahn eingestiegen. An dem Tag war es sehr voll und ein alter Mann griff mir beim Aussteigen sehr doll an den Hintern. Ich setzte mich auf einen Platz und schaute aus dem Fenster. Da stand er und hat mir noch zugezwinkert.`,
+
+        englisch: `I was 11 years old and got on the train after school. It was very crowded that day, and an old man grabbed my butt very hard as he was getting off. I sat down and looked out the window. He was standing there and winked at me.`
+    },
+
+
+    {
+        deutsch: `Ich bin spazieren gewesen und merkte, dass mir ein Typ hinterhergelaufen ist. Ich bin dann schneller geworden und Richtung Parkplatz gelaufen. Der Typ rief mir widerliche Sachen hinterher und ließ nicht locker. Als ich meinen Autoschlüssel rausgeholt habe, hatte er mich eingeholt. Er hat mir an den Hintern gefasst und wollte mich festhalten. Er meinte, ich solle froh sein, dass mich jemand trotz meines Gewichtes anfassen würde. Ich war im 5. Monat schwanger. Ich habe ihn weggeschubst und bin schnell in mein Auto.`,
+
+        englisch: `I was out for a walk and noticed that a guy was following me. I started walking faster and headed towards a parking lot. The guy shouted disgusting things at me and wouldn’t stop. When I took out my car keys, he had caught up with me. He grabbed my butt and tried to hold me. He said I should be grateful that someone would touch me despite my weight. I was five months pregnant. I pushed him away and quickly got into my car.`
+    },
+
+
+    {
+        deutsch: `Ich wollte meine kleine Schwester von der Grundschule abholen und musste dafür durch ein kleines Waldstück. Da lief mir ein Mann hinterher und fragte mich, wo eine Toilette sei. Ich sagte, dass eine in der Grundschule sei. Er bedankte sich, ging aber ein Stück weiter und fragte mich, ob ich seinen Schw*nz sehen mag und dass er groß sei.`,
+
+        englisch: `I wanted to pick up my little sister from elementary school and had to walk through a small wooded area to get there. A man followed me and asked where he could find a toilet. I told him there was one at the school. He thanked me, walked a little further, and then asked me if I wanted to see his d*ck and told me that it was big.`
+    },
+
+
+    {
+        deutsch: `Ich war in der Bahn und ein Mann starrte mich die ganze Zeit von oben bis unten an. Kurz vor der Haltestelle zwinkerte er mir zu, zog seinen Ausschnitt runter und fasste sich an seine Brust. Danach zwinkerte er mir nochmal zu.`,
+
+        englisch: `I was on the train and a man stared me up and down the entire time. Shortly before the stop, he winked at me, pulled down his shirt and grabbed his chest. Then he winked at me again.`
+    },
+
+
+    {
+        deutsch: `Ich war mit einer Freundin Inliner fahren, als eine Gruppe Jungs uns auf E-Rollern entgegenkamen. Als sie an uns vorbei fuhren, schrien sie uns Sachen hinterher wie: „Was für eine geile Bitch“ oder „Ey, schau mich an“.`,
+
+        englisch: `I was rollerblading with a friend when a group of boys came towards us on e-scooters. As they passed us, they shouted things like: “What a hot bitch” or “Hey, look at me.”`
+    },
+
+
+    {
+        deutsch: `Er sitzt auf einem Fahrrad an einer Bushaltestelle, klingelt und zwinkert mir zu. Er hat bereits graue Haare, ich bin 16 Jahre alt.`,
+
+        englisch: `He was sitting on a bicycle at a bus stop, rang his bell and winked at me. He already had gray hair. I was 16 years old.`
+    },
+
+
+    {
+        deutsch: `Ich wurde von einem Fremden mit „Hey Süße“ angesprochen. Hab ihn ignoriert und bin an ihm vorbeigegangen. Er hat sich umgedreht und mich bis zu meiner Haustüre verfolgt.`,
+
+        englisch: `A stranger approached me and said, “Hey, sweetheart.” I ignored him and walked past. He turned around and followed me all the way to my front door.`
+    }
+
+
+];
+
+
+
 /* =========================
-   SPRÜCHE
+   ZUFÄLLIGEN CATCALL AUSWÄHLEN
 ========================= */
 
 
-const spruchDeutsch =
-
-    "Ich stand abends gegen 23 Uhr alleine vorm Cinemaxx, als ein schwarzes Auto vor mir gehalten hat: „Hey, kennst du die Icki Micki Straße?“ Ich hab den Namen nicht ganz verstanden, wollte ihm helfen und bin einen Schritt näher ans Auto gegangen. Ich frage, welche Straße, und er sagt: „Ja, komm mit, die ist direkt neben der Ficki Ficki Straße.“";
+let letzterCatcall = -1;
 
 
-const spruchEnglisch =
+function zufaelligerCatcall() {
 
-    "One evening, around 11 p.m., I was standing alone in front of the Cinemaxx when a black car stopped in front of me. The driver said: „Hey, do you know Icki Micki Street?“ I didn't quite understand the name and wanted to help him, so I took one step closer to the car. I asked which street, and he said: „Yeah, come with me. It's right next to Ficki Ficki Street.“";
+    let neuerCatcall;
 
+
+    do {
+
+        neuerCatcall = Math.floor(Math.random() * catcalls.length);
+
+    } while (
+
+        neuerCatcall === letzterCatcall
+
+        && catcalls.length > 1
+
+    );
+
+
+    letzterCatcall = neuerCatcall;
+
+
+    return catcalls[neuerCatcall];
+
+}
+
+
+
+/* =========================
+   AKTUELLER CATCALL
+========================= */
+
+
+let aktuellerCatcall = zufaelligerCatcall();
 
 let englischAktiv = false;
 
 
 
 /* =========================
-   SPRUCH ANZEIGEN
+   CATCALL ANZEIGEN
 ========================= */
 
 
-function zeigeSpruch() {
+function zeigeCatcall() {
 
     const spruchElement = document.getElementById("spruch");
+
 
     spruchElement.style.opacity = "0";
 
@@ -195,16 +392,17 @@ function zeigeSpruch() {
 
         if (englischAktiv) {
 
-            spruchElement.textContent = spruchEnglisch;
+            spruchElement.textContent = aktuellerCatcall.englisch;
 
         } else {
 
-            spruchElement.textContent = spruchDeutsch;
+            spruchElement.textContent = aktuellerCatcall.deutsch;
 
         }
 
 
         spruchElement.style.opacity = "1";
+
 
     }, 300);
 
@@ -218,6 +416,7 @@ function zeigeSpruch() {
 
 
 document.getElementById("languageButton").addEventListener("click", () => {
+
 
     englischAktiv = !englischAktiv;
 
@@ -236,12 +435,23 @@ document.getElementById("languageButton").addEventListener("click", () => {
     }
 
 
-    zeigeSpruch();
+    zeigeCatcall();
+
 
 });
 
 
+
+/* =========================
+   ERSTEN CATCALL ANZEIGEN
+========================= */
+
+
+zeigeCatcall();
+
+
 </script>
+
 
 </body>
 
