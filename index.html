@@ -64,7 +64,7 @@ main {
 
 #spruch {
 
-    font-size: clamp(1.35rem, 4.5vw, 2.5rem);
+    font-size: 2.5rem;
 
     line-height: 1.45;
 
@@ -401,10 +401,38 @@ function zeigeCatcall() {
         }
 
 
+        passeSchriftgroesseAn();
+
         spruchElement.style.opacity = "1";
 
 
     }, 300);
+function passeSchriftgroesseAn() {
+
+    const spruchElement = document.getElementById("spruch");
+
+    const verfuegbareHoehe = window.innerHeight * 0.68;
+
+    let schriftgroesse = 2.5;
+
+
+    spruchElement.style.fontSize = schriftgroesse + "rem";
+
+
+    while (
+
+        spruchElement.scrollHeight > verfuegbareHoehe &&
+
+        schriftgroesse > 0.85
+
+    ) {
+
+        schriftgroesse -= 0.05;
+
+        spruchElement.style.fontSize = schriftgroesse + "rem";
+
+    }
+}
 
 }
 
@@ -448,6 +476,7 @@ document.getElementById("languageButton").addEventListener("click", () => {
 
 
 zeigeCatcall();
+    window.addEventListener("resize", passeSchriftgroesseAn);
 
 
 </script>
